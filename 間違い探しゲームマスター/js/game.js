@@ -9,6 +9,35 @@ function init() {
 let count=0;
 const m = document.getElementById("clear");
 
+
+//データの保存
+function save(){
+  let test = new TestClass();
+  let key = "message";
+  let value = timer;
+  test.set(key, parseInt(value)-1);
+  test.save().then(function(){
+    console.log("成功");
+  })
+  .catch(function(err){
+    console.log("error "+err);
+  });
+}
+// データの読み込み
+function load(){
+  let value = timer;
+  TestClass
+  .order("message")
+  .fetchAll().then(function(results){
+      if (parseInt(value)-1<results[0].message) {
+        alert("High Score!");
+      }
+  })
+  .catch(function(err){
+    console.log("error "+err);
+  });
+}
+
 function gameStart() {
   let size=5;
   let qNum=Math.floor(Math.random()*q.length);
@@ -29,6 +58,8 @@ function gameStart() {
           gameStart();
         }else{
           //alert("Game Clear!");
+          save();
+          load();
 
           let p = document.createElement("p");
           p.textContent = "GAME CLEAR!";
